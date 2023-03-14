@@ -4,6 +4,7 @@ const reactionSchema = new Schema(
   {
     reactionId: {
       type: Schema.Types.ObjectId,
+      unique: true,
       default: () => new Types.ObjectId(),
     },
     reactionBody: {
@@ -23,6 +24,7 @@ const reactionSchema = new Schema(
   },
   {
     toJSON: {
+      virtuals: true,
       getters: true,
     },
     id: false,
@@ -30,6 +32,7 @@ const reactionSchema = new Schema(
 );
 
 reactionSchema
+.virtual("dateAndTime")
   .get(function () {
     return this.createdAt;
   })

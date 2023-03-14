@@ -18,7 +18,7 @@ const thoughtSchema = new Schema(
       // (The user that created this thought)
       type: String,
       required: true,
-      ref: "User",
+      ref: "user",
     },
     reactions: [Reaction],
   },
@@ -37,6 +37,7 @@ thoughtSchema.virtual("reactionCount").get(function () {
 });
 
 thoughtSchema
+  .virtual("dateAndTime")
   .get(function () {
     return this.createdAt;
   })

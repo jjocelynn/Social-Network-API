@@ -14,17 +14,17 @@ DELETE to remove a friend from a user's friend list
 */
 
 const router = require("express").Router();
-const { } = require("../../controllers/userController"); //import controllers
+const { getUsers, getSingleUser, createUser, updateUser, deleteUser } = require("../../controllers/usersController"); //import controllers(add rute)
 
 // /api/users
 router.route("/")
-.get() //GET all users
-.post() //POST a new user
+.get(getUsers) //GET all users
+.post(createUser) //POST a new user
 
 // /api/users/:userId
 router.route("/:userId")
 .get(getSingleUser) //GET a single user by its _id and populated thought and friend data
-.put() //PUT to update a user by its _id
-.delete(); //DELETE to remove user by its _id
+.put(updateUser) //PUT to update a user by its _id
+.delete(deleteUser); //DELETE to remove user by its _id
 
 module.exports = router;
