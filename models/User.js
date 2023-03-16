@@ -1,5 +1,10 @@
 const { Schema, model } = require("mongoose");
 
+const validateEmail = (email) => {
+  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email);
+};
+
 const userSchema = new Schema(
   {
     username: {
@@ -12,17 +17,16 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      //Must match a valid email address (look into Mongoose's matching validation)
+      // // https://thewebdev.info/2022/03/16/how-to-validate-email-syntax-with-mongoose/
+      validate: [validateEmail, "Please fill a valid email address"],
     },
     thoughts: [
-      //Array of _id values referencing the Thought model
       {
         type: Schema.Types.Mixed,
         ref: "thought",
       },
     ],
     friends: [
-      //Array of _id values referencing the User model (self-reference)
       {
         type: Schema.Types.ObjectId,
         ref: "user",
@@ -42,6 +46,9 @@ const userSchema = new Schema(
 userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
+userSchema.virtual("thoughtCount").get(function() {
+  return this.thoughts.length
+})
 
 const User = model("user", userSchema);
 

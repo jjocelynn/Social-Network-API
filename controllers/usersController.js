@@ -4,18 +4,22 @@ module.exports = {
   // get all users
   getUsers(req, res) {
     User.find()
-      .populate("thoughts")
+      .populate({
+        path: "thoughts",
+        select: "thoughtText reactions.reactionBody reactions.username reactions.dateAndTime reactionCount ",
+      })
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
   // create a new user
   createUser(req, res) {
     User.create(req.body)
-      .then((dbUserData) => res.json(dbUserData))
+      .then((dbUserData) => res.json("new user created! 🎉"))
       .catch((err) => res.status(500).json(err));
   },
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
+      .populate("thoughts")
       .select("-__v")
       .then((user) =>
         !user
@@ -29,7 +33,7 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with this id!" })
-          : res.json(user)
+          : res.json("User updated! 🎉")
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -40,7 +44,7 @@ module.exports = {
           ? res.status(404).json({ message: "No user with that ID" })
           : User.deleteOne({ _id: { $in: req.params.userId } })
       )
-      .then(() => res.json({ message: "user deleted!" }))
+      .then(() => res.json("user deleted!"))
       .catch((err) => res.status(500).json(err));
   },
 };

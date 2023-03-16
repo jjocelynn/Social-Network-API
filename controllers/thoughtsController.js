@@ -1,8 +1,12 @@
 const { Thought, User } = require("../models");
+const { ObjectId } = require("mongoose").Types;
 
 module.exports = {
   getThoughts(req, res) {
     Thought.find()
+      .select(
+        "_id thoughtText username dateAndTime reactionCount reactions.reactionBody reactions.username"
+      )
       .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
   },
@@ -10,8 +14,8 @@ module.exports = {
     Thought.create(req.body)
       .then((thought) => {
         return User.findOneAndUpdate(
-          { _id: req.body.username },
-          { $addToSet: { thoughts: thought._id } },
+          { username: ObjectId(req.body.username) },
+          { $addToSet: { thoughts: thought._id } }, //comeback to this part
           { new: true }
         );
       })
@@ -74,32 +78,31 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-
-    addThoughtReaction(req, res) {
-      Thought.findOneAndUpdate(
-        { _id: req.params.thoughtId },
-        { $addToSet: { reactions: req.body } },
-        { runValidators: true, new: true }
+  addThoughtReaction(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
+      { runValidators: true, new: true }
+    )
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: "No thought with this id!" })
+          : res.json(thought)
       )
-        .then((thought) =>
-          !thought
-            ? res.status(404).json({ message: "No thought with this id!" })
-            : res.json(thought)
-        )
-        .catch((err) => res.status(500).json(err));
-    },
+      .catch((err) => res.status(500).json(err));
+  },
 
-    removeReaction(req, res) {
-      Thought.findOneAndUpdate(
-        { _id: req.params.thoughtId },
-        { $pull: { reactions: { reactionId: req.params.reactionId } } },
-        { runValidators: true, new: true }
+  removeReaction(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
+      { runValidators: true, new: true }
+    )
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: "No reaction with this id!" })
+          : res.json(thought)
       )
-        .then((thought) =>
-          !thought
-            ? res.status(404).json({ message: "No reaction with this id!" })
-            : res.json(thought )
-        )
-        .catch((err) => res.status(500).json(err));
-    },
+      .catch((err) => res.status(500).json(err));
+  },
 };

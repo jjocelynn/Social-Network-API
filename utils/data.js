@@ -2,20 +2,20 @@ const usernames = [
   "Alex",
   "bob1",
   "iCarly",
-  "Dino",
-  "Earthling",
-  "FrankOcean",
-  "goob",
+  // "Dino",
+  // "Earthling",
+  // "FrankOcean",
+  // "goob",
 ];
 
 const emails = [
   "123@hotmail.com",
   "abc@gmail.com",
   "coolbeand@email.com",
-  "dogz@hotmail.com",
-  "cats@gmail.com",
-  "horsegirl@outlook.com",
-  "wevebeentryingtoreachyouaboutyourcarsextendedwarranty@spam.com",
+  // "dogz@hotmail.com",
+  // "cats@gmail.com",
+  // "horsegirl@outlook.com",
+  // "wevebeentryingtoreachyouaboutyourcarsextendedwarranty@spam.com",
 ];
 
 const thoughts = [
@@ -68,7 +68,7 @@ const getRandomThoughts = (int) => {
     results.push({
       thoughtText: getRandom(thoughts),
       username: getRandom(usernames),
-      reactions: [...getReaction(3)],
+      reactions: [...getReaction(2)],
     });
   }
   return results;
@@ -89,4 +89,4 @@ const getReaction = (int) => {
   return results;
 };
 
-module.exports = { usernames, emails, getRandomThoughts };
+module.exports = { usernames, emails, getRandomThoughts, getRandom };
