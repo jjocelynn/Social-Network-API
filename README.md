@@ -4,12 +4,17 @@
 
 This is an API for a social networking application created with Express.js and Mongoose. It runs with the help of MongoDB and Insomnia since there is no frontend for this application. The application allows users to view, create, update and delete thoughts and users and also allows users the option of adding friends, and reactions to thoughts.
 
+## Demonstration Video
+
+[![demonstration video for the Social Network Api routes in insomnia](https://img.youtube.com/vi/2U00sX3RyEs/maxresdefault.jpg)](https://youtu.be/2U00sX3RyEs)
+
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
 - [Questions](#questions)
+- [Sources](#sources)
 
 ## Installation
 
@@ -44,6 +49,14 @@ Available routes following the domain (http://localhost:3001):
     * POST request for adding a reaction to specific thought (needs a "reactionBody" and "username" in the JSON body)
 * /api/thoughts/:thoughtId/reactions/:reactionId
     * DELETE request for deleting a reaction
+
+
+## Sources
+Class modules
+
+formatting time: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
+
+validating emails: https://thewebdev.info/2022/03/16/how-to-validate-email-syntax-with-mongoose/
 
 ## License
 

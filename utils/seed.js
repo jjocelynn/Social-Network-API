@@ -1,7 +1,6 @@
 const connection = require("../config/connection");
 const { User, Thought } = require("../models");
 const { usernames, emails, getRandomThoughts, getRandom } = require("./data");
-const { ObjectId } = require("mongoose").Types;
 const regex = /^(\w{24})$/;
 
 connection.on("error", (err) => err);

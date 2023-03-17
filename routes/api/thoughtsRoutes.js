@@ -1,14 +1,3 @@
-/* /api/thoughts
-
-POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
-// example data
-{
-  "thoughtText": "Here's a cool thought...",
-  "username": "lernantino",
-  "userId": "5edff358a0fcb779aa7b118b"
-}
-*/
-
 const router = require("express").Router();
 const {
   getThoughts,
@@ -23,7 +12,7 @@ const {
 // /api/thoughts
 router.route("/")
 .get(getThoughts) //GET to get all thoughts
-.post(createThought); //POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
+.post(createThought); //POST to create a new thought
 
 // /api/thoughts/:thoughtId
 router

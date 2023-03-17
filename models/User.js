@@ -1,10 +1,12 @@
 const { Schema, model } = require("mongoose");
 
+ // https://thewebdev.info/2022/03/16/how-to-validate-email-syntax-with-mongoose/
 const validateEmail = (email) => {
   const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   return re.test(email);
 };
 
+// creating user schema
 const userSchema = new Schema(
   {
     username: {
@@ -17,7 +19,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      // // https://thewebdev.info/2022/03/16/how-to-validate-email-syntax-with-mongoose/
       validate: [validateEmail, "Please fill a valid email address"],
     },
     thoughts: [
@@ -46,6 +47,8 @@ const userSchema = new Schema(
 userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
+
+//creating a virtual called thought count
 userSchema.virtual("thoughtCount").get(function () {
   return this.thoughts.length;
 });

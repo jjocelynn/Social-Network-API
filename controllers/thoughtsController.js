@@ -1,19 +1,21 @@
+//importing thought and user models
 const { Thought, User } = require("../models");
-const { ObjectId } = require("mongoose").Types;
 
 module.exports = {
+  // get all thoughts
   getThoughts(req, res) {
     Thought.find()
-    .select("-reactions._id -reactions.createdAt -createdAt")
+      .select("-reactions._id -reactions.createdAt -createdAt")
       .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
   },
+  // create a new thought
   createThought(req, res) {
     Thought.create(req.body)
       .then((thought) => {
         return User.findOneAndUpdate(
           { username: req.body.username },
-          { $addToSet: { thoughts: thought._id } }, //comeback to this part
+          { $addToSet: { thoughts: thought._id } },
           { new: true }
         );
       })
@@ -30,6 +32,7 @@ module.exports = {
       });
   },
 
+  // get a single thought
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select("-reactions._id -reactions.createdAt -createdAt")
@@ -40,6 +43,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  // update a single thought
   updateThought(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -56,6 +60,7 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+  // delete a single thought
   deleteThought(req, res) {
     Thought.findOneAndRemove({ _id: req.params.thoughtId })
       .then((thought) =>
@@ -77,6 +82,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
+  // post a reaction
   addThoughtReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -91,6 +97,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
+  // delete a reaction
   removeReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },

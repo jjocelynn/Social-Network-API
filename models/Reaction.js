@@ -1,5 +1,6 @@
 const { Schema, Types } = require("mongoose");
 
+//reaction schema
 const reactionSchema = new Schema(
   {
     reactionId: {
@@ -30,6 +31,7 @@ const reactionSchema = new Schema(
   }
 );
 
+//formatted time stamp
 reactionSchema
 .virtual("timeStamp")
   .get(function () {

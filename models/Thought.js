@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const reactionSchema = require("./Reaction");
 
+// thought schema
 const thoughtSchema = new Schema(
   {
     thoughtText: {
@@ -34,6 +35,7 @@ thoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
 
+// formatting time
 thoughtSchema.virtual("timeStamp").get(function () {
   let created = this.createdAt;
   //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat

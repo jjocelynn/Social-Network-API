@@ -1,10 +1,3 @@
-/* 
-BONUS: Remove a user's associated thoughts when deleted.
-/api/users/:userId/friends/:friendId
-POST to add a new friend to a user's friend list
-DELETE to remove a friend from a user's friend list
-*/
-
 const router = require("express").Router();
 const { getUsers, getSingleUser, createUser, updateUser, deleteUser, updateFriends, removeFriend } = require("../../controllers/usersController"); //import controllers(add rute)
 
@@ -21,8 +14,8 @@ router.route("/:userId")
 
 // /api/users/:userId/friends/:friendId
 router.route("/:userId/friends/:friendId")
-.post(updateFriends)
-.delete(removeFriend);
+.post(updateFriends) //POST a friend by their user id to associated User
+.delete(removeFriend); //DELETE a friend by their user id associated to User
 
 
 module.exports = router;
