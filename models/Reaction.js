@@ -4,8 +4,9 @@ const reactionSchema = new Schema(
   {
     reactionId: {
       type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
+      default: function(){
+        return new Types.ObjectId();
+      }},
     reactionBody: {
       type: String,
       required: true,
@@ -18,7 +19,6 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      //Use a getter method to format the timestamp on query
     },
   },
   {
@@ -31,13 +31,10 @@ const reactionSchema = new Schema(
 );
 
 reactionSchema
-.virtual("dateAndTime")
+.virtual("timeStamp")
   .get(function () {
-    return this.createdAt;
-  })
-  .set(function (created) {
+    let created = this.createdAt
     //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
-
     const date = new Intl.DateTimeFormat("en-US", {
       dateStyle: "medium",
     }).format(created);
@@ -46,7 +43,7 @@ reactionSchema
       timeStyle: "short",
     }).format(created);
 
-    this.set({ date, time});
-  });
+    return (`${date} at ${time}`);
+  })
 
 module.exports = reactionSchema;

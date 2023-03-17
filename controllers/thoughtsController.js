@@ -4,9 +4,7 @@ const { ObjectId } = require("mongoose").Types;
 module.exports = {
   getThoughts(req, res) {
     Thought.find()
-      .select(
-        "_id thoughtText username dateAndTime reactionCount reactions.reactionBody reactions.username"
-      )
+    .select("-reactions._id -reactions.createdAt -createdAt")
       .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
   },
@@ -14,7 +12,7 @@ module.exports = {
     Thought.create(req.body)
       .then((thought) => {
         return User.findOneAndUpdate(
-          { username: ObjectId(req.body.username) },
+          { username: req.body.username },
           { $addToSet: { thoughts: thought._id } }, //comeback to this part
           { new: true }
         );
@@ -34,6 +32,7 @@ module.exports = {
 
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
+      .select("-reactions._id -reactions.createdAt -createdAt")
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No thought with that ID" })
@@ -101,7 +100,7 @@ module.exports = {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No reaction with this id!" })
-          : res.json(thought)
+          : res.json("Reaction deleted!")
       )
       .catch((err) => res.status(500).json(err));
   },

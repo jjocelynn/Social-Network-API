@@ -2,6 +2,7 @@ const connection = require("../config/connection");
 const { User, Thought } = require("../models");
 const { usernames, emails, getRandomThoughts, getRandom } = require("./data");
 const { ObjectId } = require("mongoose").Types;
+const regex = /^(\w{24})$/;
 
 connection.on("error", (err) => err);
 
@@ -21,7 +22,6 @@ connection.once("open", async () => {
 
     let thoughtId = await Thought.find({ username: username }, "_id");
 
-    const regex = /^(\w{24})$/;
     let thoughts = [];
 
     for (const thoughtIdString of thoughtId) {
@@ -43,37 +43,30 @@ connection.once("open", async () => {
 
   //  for (let i = 0; i < usernames.length; i++) {
 
-  let userIds = await User.find({}, "userId");
-  console.log(userIds);
+  // let userIds = await User.find({}, "userId");
 
-  let friends = [];
-  // loop through each user and give them random friends
-  for (let i = 0; i < users.length; i++) {
-    const randomFriendCount = Math.floor(Math.random() * users.length);
-    // randomizing how many friends each user gets (can be their own friend. self-love.)
-    for (let i = 0; i < randomFriendCount; i++) {
-      friends.push(getRandom(userIds));
-    }
-  }
+  // //translating userId to strings and saving in userIdArray
+  // let userIdArray = [];
+  // for (const userIdString of userIds) {
+  //   const id = userIdString._id.toString();
+  //   let filtered = id.match(regex);
+  //   userIdArray.push(filtered);
+  // }
 
-  console.log(friends);
-  await User.updateOne({ _id: User._id }, { $set: { friends: friends } });
+  // let friends = [];
 
-  //    let thoughts = [];
-  //    thoughts.push(thoughtId);
+  // // loop through each user and give them random friends
+  // for (let i = 0; i < usernames.length; i++) {
+  //   // randomizing how many friends each user gets (can be their own friend. self-love.)
+  //   const randomFriendCount = Math.floor(Math.random() * usernames.length);
+  //   for (let i = 0; i < randomFriendCount; i++) {
+  //     friends.push(getRandom(userIdArray));
+  //   }
+  // }
 
-  //    users.push({
-  //      username,
-  //      email,
-  //      thoughts,
-  //    });
-  //  }
-  //      email,
-  //      thoughts,
-  //    });
-  //  }
+  // await User.collection.updateMany({}, { $set: { friends: friends } });
 
-  // loop through the saved applications, for each application we need to generate a application response and insert the application responses
+  
   console.table(thoughts);
   console.table(users);
   console.info("Seeding complete! 🌱");

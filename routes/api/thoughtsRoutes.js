@@ -37,6 +37,6 @@ router.route("/:thoughtId/reactions")
 .post(addThoughtReaction) // POST to create a reaction stored in a single thought's reactions array field
 
 // /api/thoughts/:thoughtId/reactions/:reactionId
-router.route("/:thoughtId/:reactionId").delete(removeReaction); // DELETE to pull and remove a reaction by the reaction's reactionId value
+router.route("/:thoughtId/reactions/:reactionId").delete(removeReaction); // DELETE to pull and remove a reaction by the reaction's reactionId value
 
 module.exports = router;

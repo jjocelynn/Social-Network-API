@@ -12,10 +12,8 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      // Use a getter method to format the timestamp on query
     },
     username: {
-      // (The user that created this thought)
       type: String,
       required: true,
       ref: "user",
@@ -36,24 +34,19 @@ thoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
 
-thoughtSchema
-  .virtual("dateAndTime")
-  .get(function () {
-    return this.createdAt;
-  })
-  .set(function (created) {
-    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
+thoughtSchema.virtual("timeStamp").get(function () {
+  let created = this.createdAt;
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
+  const date = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+  }).format(created);
 
-    const date = new Intl.DateTimeFormat("en-US", {
-      dateStyle: "medium",
-    }).format(created);
+  const time = new Intl.DateTimeFormat("en-US", {
+    timeStyle: "short",
+  }).format(created);
 
-    const time = new Intl.DateTimeFormat("en-US", {
-      timeStyle: "short",
-    }).format(created);
-
-    this.set({ date, time });
-  });
+  return `${date} at ${time}`;
+});
 
 const Thought = model("thought", thoughtSchema);
 
